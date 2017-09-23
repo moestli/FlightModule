@@ -22,25 +22,27 @@ Function Get-FlightLowFare {
                 $FlightNumber = $Itinerary.operating_airline + $Itinerary.flight_number
                 $Aircraft     = $Itinerary.aircraft
                 $FlightClass  = $Itinerary.booking_info.travel_class
-                $FlightDate   = ($Itinerary.departs_at).split('T')[0]
-                $FlightTime   = ($Itinerary.departs_at).split('T')[1]
-                $ArrivalDate  = ($Itinerary.arrives_at).split('T')[0]
-                $ArrivalTime  = ($Itinerary.arrives_at).split('T')[1]
+                $FlightDate   = Get-Date $Itinerary.departs_at -Format "dd.MM.yyyy"
+                $FlightTime   = Get-Date $Itinerary.departs_at -Format "HH:mm"
+                $ArrivalDate  = Get-Date $Itinerary.arrives_at -Format "dd.MM.yyyy"
+                $ArrivalTime  = Get-Date $Itinerary.arrives_at -Format "HH:mm"
+                $FlightDuration = New-TimeSpan -Start ($Itinerary.departs_at) -End ($Itinerary.arrives_at)
 
                 New-Object -TypeName psobject -Property @{
-                    'price'          = $FlightPrice;
-                    'flightNumber'   = $FlightNumber;
-                    'aircraft'       = $Aircraft;
-                    'class'          = $FlightClass;
-                    'departure_date' = $FlightDate;
-                    'departure_time' = $FlightTime;
-                    'arrival_date'   = $ArrivalDate;
-                    'arrival_time'   = $ArrivalTime
+                    'price'           = $FlightPrice;
+                    'flightnumber'    = $FlightNumber;
+                    'aircraft'        = $Aircraft;
+                    'class'           = $FlightClass;
+                    'departure_date'  = $FlightDate;
+                    'departure_time'  = $FlightTime
+                    'arrival_date'    = $ArrivalDate;
+                    'arrival_time'    = $ArrivalTime
+                    'flight_duration' = $FlightDuration 
                 }
             }
         }
     }
     End {
-        return $Result
+        return $Result | Select-Object flightnumber,aircraft,class,departure_date,departure_time,arrival_date,arrival_time,flight_duration
     }
 }
