@@ -8,11 +8,10 @@ Function Get-FlightLowFare {
     )
     Begin {
         [float]$CurrencyConversion = Get-CurrencyExchangeRate -Currency USD -ReturnRate $ReturnCurrency
-        $URL  = "https://api.sandbox.amadeus.com/v1.2/flights/low-fare-search"
         $Body = @{'apikey'=$AmadeusKey;'origin'=$Origin;'destination'=$Destination;'departure_date'=$DepartureDate}  
     }
     Process {
-        $Result = Invoke-RestMethod -Method Get -Uri $URL -Body $Body | Select-Object -ExpandProperty results
+        $Result = Invoke-RestMethod -Method Get -Uri $AmadeusLowFareURL -Body $Body | Select-Object -ExpandProperty results
         $Result = $Result | ForEach-Object {
             $FlightFare  = $_.fare
             $Itineraries = $_.itineraries.outbound.flights

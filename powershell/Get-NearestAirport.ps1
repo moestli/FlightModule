@@ -7,7 +7,7 @@ Function Get-NearestAirport {
         $Coordinates = Get-GoogleMapsCoordinate -Address $Address
         $Latitude    = $Coordinates.lat.ToString().split(',')[0]
         $Longitude   = $Coordinates.lng.ToString().split(',')[0]
-        $URL = "https://api.sandbox.amadeus.com/v1.2/airports/nearest-relevant"
+        $URL = $AmadeausNearAirportURL
     }
     Process {
         $Parameters = @{'apikey'=$AmadeusKey;'latitude'=$Latitude;'longitude'=$Longitude}
