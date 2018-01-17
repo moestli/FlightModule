@@ -3,7 +3,11 @@ Function Get-FlightLowFare {
     Param (
         [Parameter(Mandatory)][string]$Origin,
         [Parameter(Mandatory)][string]$Destination,
-        [Parameter(Mandatory)][string]$DepartureDate, # yyyy-MM-dd
+        
+        [Parameter(Mandatory,HelpMessage="Input must be in format yyyy-MM-dd")]
+        [ValidateScript({[datetime]::ParseExact($_,'yyyy-MM-dd',$null)})]
+        [string]$DepartureDate,
+        
         [Parameter(Mandatory=$false)][string]$ReturnCurrency = 'NOK'
     )
     Begin {
