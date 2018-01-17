@@ -3,7 +3,11 @@ Function Get-FlightLowFare {
     Param (
         [Parameter(Mandatory)][string]$Origin,
         [Parameter(Mandatory)][string]$Destination,
-        [Parameter(Mandatory)][string]$DepartureDate, # yyyy-MM-dd
+        
+        [Parameter(Mandatory,HelpMessage="Input must be in format yyyy-MM-dd")]
+        [ValidateScript({[datetime]::ParseExact($_,'yyyy-MM-dd',$null)})]
+        [string]$DepartureDate,
+        
         [Parameter(Mandatory=$false)][string]$ReturnCurrency = 'NOK'
     )
     Begin {
@@ -12,7 +16,7 @@ Function Get-FlightLowFare {
     }
     Process {
         $Result = Invoke-RestMethod -Method Get -Uri $AmadeusLowFareURL -Body $Body | Select-Object -ExpandProperty results
-        $Result = $Result | ForEach-Object {
+        $Output = $Result | ForEach-Object {
             $FlightFare  = $_.fare
             $Itineraries = $_.itineraries.outbound.flights
             foreach ($Itinerary in $Itineraries) {
@@ -42,6 +46,6 @@ Function Get-FlightLowFare {
         }
     }
     End {
-        return $Result | Select-Object flightnumber,aircraft,class,departure_date,departure_time,arrival_date,arrival_time,flight_duration
+        return $Output
     }
 }
