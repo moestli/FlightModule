@@ -1,5 +1,5 @@
 # FlightModule
-Order your next vacation abroad faster! Determine the best price for an unspecified itinerary and email your boss about it.
+Make better flight ordering decisions! Demo built with the Amadeus Sandbox API.
 
 API Documentation:
 - http://fixer.io/ (Currency conversion)
