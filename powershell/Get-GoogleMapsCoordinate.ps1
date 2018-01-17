@@ -8,9 +8,9 @@ Function Get-GoogleMapsCoordinate {
         $URL = $GmapsGeoCodeURL + $Address + "&key=$MapsKey"
     }
     Process {
-        $Result = (Invoke-RestMethod -Method Get -Uri $URL).results
+        $Result = (Invoke-RestMethod -Method Get -Uri $URL).results.geometry.location
     }
     End {
-        return $Result.geometry.location
+        return $Result
     }
 }
