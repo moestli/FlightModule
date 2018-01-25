@@ -12,6 +12,7 @@ Function Get-FlightLowFare {
     Begin {
         [float]$CurrencyConversion = Get-CurrencyExchangeRate -Currency USD -ReturnRate $ReturnCurrency
         $Body = @{'apikey'=$AmadeusKey;'origin'=$Origin;'destination'=$Destination;'departure_date'=$DepartureDate}
+        $Date = Get-Date -Format dd.MM.yyyy
     }
     Process {
         $Result = Invoke-RestMethod -Method Get -Uri $AmadeusLowFareURL -Body $Body | Select-Object -ExpandProperty results
@@ -22,6 +23,7 @@ Function Get-FlightLowFare {
 
                 New-Object -TypeName psobject -Property @{
                     'price'           = [math]::Round([float]$FlightFare.total_price * $CurrencyConversion);
+                    'price_date'      = $Date;
                     'flightnumber'    = $Itinerary.operating_airline + $Itinerary.flight_number;
                     'aircraft'        = $Itinerary.aircraft;
                     'class'           = $Itinerary.booking_info.travel_class;
