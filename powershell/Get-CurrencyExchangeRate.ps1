@@ -8,9 +8,6 @@ Function Get-CurrencyExchangeRate {
         $URL = $FixerURL + $Currency
     }
     Process {
-        $Rates = Invoke-RestMethod -Method Get -Uri $URL | Select-Object -ExpandProperty Rates
-    }
-    End {
-        return $Rates.$ReturnRate
+       Invoke-RestMethod -Method Get -Uri $URL
     }
 }

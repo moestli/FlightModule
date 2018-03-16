@@ -10,7 +10,7 @@ Function Get-FlightLowFare {
         [string]$DepartureDate        
     )
     Begin {
-        [float]$CurrencyConversion = Get-CurrencyExchangeRate -Currency USD -ReturnRate $ReturnCurrency
+        [float]$CurrencyConversion = Get-CurrencyExchangeRate -Currency USD -ReturnRate $ReturnCurrency | Select-Object -ExpandProperty Rates
         $Body = @{'apikey'=$AmadeusKey;'origin'=$Origin;'destination'=$Destination;'departure_date'=$DepartureDate}
         $Date = Get-Date -Format dd.MM.yyyy
     }
