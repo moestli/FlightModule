@@ -11,10 +11,6 @@ Function Get-NearestAirport {
     }
     Process {
         $Parameters = @{'apikey'=$AmadeusKey;'latitude'=$Latitude;'longitude'=$Longitude}
-        $Result = Invoke-RestMethod -Method Get -Uri $URL -Body $Parameters 
-        $Result = $Result | Select-Object -Property airport,airport_name,city_name
-    }
-    End {
-        return $Result
+        Invoke-RestMethod -Method Get -Uri $URL -Body $Parameters 
     }
 }
