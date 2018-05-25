@@ -12,7 +12,7 @@ Function Get-FlightLowFare {
     Begin {
         [float]$CurrencyConversion = Get-CurrencyExchangeRate -Currency USD -ReturnRate $ReturnCurrency | Select-Object -ExpandProperty Rates
         $Body = @{'apikey'=$AmadeusKey;'origin'=$Origin;'destination'=$Destination;'departure_date'=$DepartureDate}
-        $Date = Get-Date -Format dd.MM.yyyy
+        $Date = Get-Date -Format yyyy.MM.dd
     }
     Process {
         $Result = Invoke-RestMethod -Method Get -Uri $AmadeusLowFareURL -Body $Body | Select-Object -ExpandProperty results
@@ -27,9 +27,9 @@ Function Get-FlightLowFare {
                     'flightnumber'    = $Itinerary.operating_airline + $Itinerary.flight_number;
                     'aircraft'        = $Itinerary.aircraft;
                     'class'           = $Itinerary.booking_info.travel_class;
-                    'departure_date'  = Get-Date $Itinerary.departs_at -Format "dd.MM.yyyy";
+                    'departure_date'  = Get-Date $Itinerary.departs_at -Format "yyyy.MM.dd";
                     'departure_time'  = Get-Date $Itinerary.departs_at -Format "HH:mm";
-                    'arrival_date'    = Get-Date $Itinerary.arrives_at -Format "dd.MM.yyyy";
+                    'arrival_date'    = Get-Date $Itinerary.arrives_at -Format "yyyy.MM.dd";
                     'arrival_time'    = Get-Date $Itinerary.arrives_at -Format "HH:mm";
                     'flight_duration' = New-TimeSpan -Start ($Itinerary.departs_at) -End ($Itinerary.arrives_at)
                 }
